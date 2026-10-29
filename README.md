@@ -2,6 +2,10 @@
 
 A no-build, browser-based delivery analytics dashboard for exploring order reliability, delivery speed, cancellations, and customer ratings. It works with imported CSV data and includes a synthetic demo dataset for previewing the interface.
 
+## Live Demo
+
+🚀 [Open the Live Dashboard](https://ankit-tripathi-31.github.io/e-commerce-delivery-logistics-analysis/)
+
 ## Highlights
 
 - Light and night themes, with the preference saved in the browser.
