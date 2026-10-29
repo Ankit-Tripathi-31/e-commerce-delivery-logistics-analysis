@@ -9,3 +9,6 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 data/private/
+.vscode/
+Data Analyst.pdf
+Project Execution PDF.pdf
