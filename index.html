@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f6f2">
+    <title>Delivery Performance | Fieldnote</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="src/app.mjs"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Fieldnote home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>FIELDNOTE<span class="brand-sub"> / OPERATIONS</span></span>
+        </a>
+        <div class="topbar-right">
+          <span class="live-state"><span></span> PERFORMANCE REPORT</span>
+          <button class="button button-quiet theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to night mode" title="Switch to night mode">
+            <span class="theme-icon" aria-hidden="true">☾</span><span id="theme-label">Night mode</span>
+          </button>
+          <button class="button button-quiet" id="export-report" type="button" title="Download a Markdown report">Export report <span aria-hidden="true">↗</span></button>
+        </div>
+      </header>
+
+      <main id="top" class="page-content">
+        <section class="page-heading" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">LAST-MILE DELIVERY / ANALYSIS</p>
+            <h1 id="page-title">Delivery performance</h1>
+            <p class="lede">A practical read on reliability, speed, and customer experience.</p>
+          </div>
+          <div class="heading-actions">
+            <label class="button button-primary upload-button" for="csv-file"><span aria-hidden="true">＋</span> Import CSV</label>
+            <input id="csv-file" type="file" accept=".csv,text/csv">
+            <button class="button button-quiet" id="load-demo" type="button">Reset to demo</button>
+          </div>
+        </section>
+
+        <section class="source-banner" id="source-banner" aria-live="polite">
+          <span class="source-dot" aria-hidden="true"></span>
+          <div><strong>Synthetic demonstration data</strong><span>Not a real operating result. Import your order-level CSV to replace it.</span></div>
+          <span class="source-count" id="source-count"></span>
+        </section>
+        <p class="notice" id="import-message" role="status" hidden></p>
+
+        <section class="filter-row" aria-label="Report filters">
+          <div class="filter-label"><span class="filter-glyph" aria-hidden="true">⌕</span> FILTER VIEW</div>
+          <label class="filter-control">Period
+            <select id="period-filter" aria-label="Filter by period">
+              <option value="90">Last 90 days</option>
+              <option value="30">Last 30 days</option>
+              <option value="all">All available</option>
+            </select>
+          </label>
+          <label class="filter-control">Region
+            <select id="region-filter" aria-label="Filter by region"><option value="all">All regions</option></select>
+          </label>
+          <label class="filter-control">Carrier
+            <select id="carrier-filter" aria-label="Filter by carrier"><option value="all">All carriers</option></select>
+          </label>
+          <button class="reset-filters" id="clear-filters" type="button">Clear filters</button>
+        </section>
+
+        <section class="kpi-grid" aria-label="Key performance indicators">
+          <article class="kpi-card kpi-ontime">
+            <div class="kpi-top"><span>ON-TIME DELIVERY</span><span class="kpi-mark" aria-hidden="true">↗</span></div>
+            <div class="kpi-value" id="kpi-ontime">—</div>
+            <div class="kpi-foot"><span id="kpi-ontime-detail">Awaiting data</span><span class="kpi-rule">PROMISE VS ACTUAL</span></div>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-top"><span>AVG. DELIVERY TIME</span><span class="kpi-mark kpi-mark-coral" aria-hidden="true">◷</span></div>
+            <div class="kpi-value" id="kpi-duration">—</div>
+            <div class="kpi-foot"><span id="kpi-duration-detail">Awaiting data</span><span class="kpi-rule">DISPATCH TO DOOR</span></div>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-top"><span>CANCELLATION RATE</span><span class="kpi-mark kpi-mark-blue" aria-hidden="true">×</span></div>
+            <div class="kpi-value" id="kpi-cancel">—</div>
+            <div class="kpi-foot"><span id="kpi-cancel-detail">Awaiting data</span><span class="kpi-rule">OF PLACED ORDERS</span></div>
+          </article>
+          <article class="kpi-card">
+            <div class="kpi-top"><span>CUSTOMER RATING</span><span class="kpi-mark kpi-mark-yellow" aria-hidden="true">★</span></div>
+            <div class="kpi-value" id="kpi-rating">—</div>
+            <div class="kpi-foot"><span id="kpi-rating-detail">Awaiting data</span><span class="kpi-rule">DELIVERED ORDERS</span></div>
+          </article>
+        </section>
+
+        <section class="analysis-grid">
+          <article class="panel trend-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">RELIABILITY OVER TIME</p><h2>On-time delivery trend</h2></div>
+              <div class="chart-legend"><span class="legend-line"></span> On time <span class="target-chip">Target 95%</span></div>
+            </div>
+            <div class="chart-wrap" id="trend-chart" role="img" aria-label="Weekly on-time delivery trend"></div>
+            <div class="chart-foot"><span id="trend-caption">Weekly rate among delivered orders with both dates recorded.</span><span id="trend-sample"></span></div>
+          </article>
+          <article class="panel readout-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">WHAT TO LOOK AT</p><h2>Operational readout</h2></div>
+              <span class="readout-icon" aria-hidden="true">↘</span>
+            </div>
+            <div id="recommendations" class="recommendations"></div>
+            <p class="readout-note">These are investigation prompts, not causal conclusions. Validate against route, product, and service context before changing operations.</p>
+          </article>
+        </section>
+
+        <section class="panel breakdown-panel">
+          <div class="panel-heading breakdown-heading">
+            <div><p class="eyebrow">SEGMENT COMPARISON</p><h2>Where reliability varies</h2></div>
+            <span class="panel-aside">Rates shown only when promise and actual dates are available</span>
+          </div>
+          <div class="comparison-grid">
+            <div>
+              <div class="comparison-title"><h3>By carrier</h3><span>DELIVERED / ELIGIBLE</span></div>
+              <div class="comparison-list" id="carrier-comparison"></div>
+            </div>
+            <div>
+              <div class="comparison-title"><h3>By region</h3><span>DELIVERED / ELIGIBLE</span></div>
+              <div class="comparison-list" id="region-comparison"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bottom-grid">
+          <article class="panel table-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">DETAIL</p><h2>Carrier scorecard</h2></div>
+              <span class="panel-aside">Sorted by order volume</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Carrier</th><th>Orders</th><th>On time</th><th>Avg. delay</th><th>Cancelled</th><th>Rating</th></tr></thead>
+                <tbody id="carrier-table"></tbody>
+              </table>
+            </div>
+          </article>
+          <aside class="method-panel">
+            <p class="eyebrow">READ THIS FIRST</p>
+            <h2>How these numbers work</h2>
+            <dl>
+              <div><dt>On-time</dt><dd>Delivered orders with valid promised and actual dates. Delivered on or before promise.</dd></div>
+              <div><dt>Delivery time</dt><dd>Average elapsed time from dispatch to actual delivery.</dd></div>
+              <div><dt>Cancellation</dt><dd>Cancelled orders divided by all placed orders in the filtered view.</dd></div>
+              <div><dt>Small samples</dt><dd>Segments below 10 eligible deliveries are flagged; treat their rates as directional.</dd></div>
+            </dl>
+            <p class="method-foot">Date coverage: <strong id="coverage-value">—</strong> of delivered orders have both promise and actual dates.</p>
+          </aside>
+        </section>
+
+        <footer class="page-footer"><span>FIELDNOTE / DELIVERY OPERATIONS</span><span id="footer-period">Reporting window: —</span><span>Descriptive analysis only · Correlation is not causation</span></footer>
+      </main>
+    </div>
+  </body>
+</html>
